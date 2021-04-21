@@ -1,54 +1,54 @@
-srch_id: {'Not-null': 9817530, 'Total': 9817530} 
-date_time: {'Not-null': 9817530, 'Total': 9817530} 
-site_id: {'Not-null': 9817530, 'Total': 9817530} 
-visitor_location_country_id: {'Not-null': 9817530, 'Total': 9817530} 
-visitor_hist_starrating: {'Not-null': 499858, 'Total': 9817530} 
-visitor_hist_adr_usd: {'Not-null': 502154, 'Total': 9817530} 
-prop_country_id: {'Not-null': 9817530, 'Total': 9817530} 
-prop_id: {'Not-null': 9817530, 'Total': 9817530} 
-prop_starrating: {'Not-null': 9817530, 'Total': 9817530} 
-prop_review_score: {'Not-null': 9803041, 'Total': 9817530} 
-prop_brand_bool: {'Not-null': 9817530, 'Total': 9817530} 
-prop_location_score1: {'Not-null': 9817530, 'Total': 9817530} 
-prop_location_score2: {'Not-null': 7660878, 'Total': 9817530} 
-prop_log_historical_price: {'Not-null': 9817530, 'Total': 9817530} 
-position: {'Not-null': 9817530, 'Total': 9817530} 
-price_usd: {'Not-null': 9817530, 'Total': 9817530} 
-promotion_flag: {'Not-null': 9817530, 'Total': 9817530} 
-srch_destination_id: {'Not-null': 9817530, 'Total': 9817530} 
-srch_length_of_stay: {'Not-null': 9817530, 'Total': 9817530} 
-srch_booking_window: {'Not-null': 9817530, 'Total': 9817530} 
-srch_adults_count: {'Not-null': 9817530, 'Total': 9817530} 
-srch_children_count: {'Not-null': 9817530, 'Total': 9817530} 
-srch_room_count: {'Not-null': 9817530, 'Total': 9817530} 
-srch_saturday_night_bool: {'Not-null': 9817530, 'Total': 9817530} 
-srch_query_affinity_score: {'Not-null': 629238, 'Total': 9817530} 
-orig_destination_distance: {'Not-null': 6633161, 'Total': 9817530} 
-random_bool: {'Not-null': 9817530, 'Total': 9817530} 
-comp1_rate: {'Not-null': 233474, 'Total': 9817530} 
-comp1_inv: {'Not-null': 251922, 'Total': 9817530} 
-comp1_rate_percent_diff: {'Not-null': 183005, 'Total': 9817530} 
-comp2_rate: {'Not-null': 4000109, 'Total': 9817530} 
-comp2_inv: {'Not-null': 4208949, 'Total': 9817530} 
-comp2_rate_percent_diff: {'Not-null': 1098709, 'Total': 9817530} 
-comp3_rate: {'Not-null': 3028576, 'Total': 9817530} 
-comp3_inv: {'Not-null': 3259102, 'Total': 9817530} 
-comp3_rate_percent_diff: {'Not-null': 934651, 'Total': 9817530} 
-comp4_rate: {'Not-null': 613980, 'Total': 9817530} 
-comp4_inv: {'Not-null': 685637, 'Total': 9817530} 
-comp4_rate_percent_diff: {'Not-null': 261664, 'Total': 9817530} 
-comp5_rate: {'Not-null': 4399136, 'Total': 9817530} 
-comp5_inv: {'Not-null': 4672925, 'Total': 9817530} 
-comp5_rate_percent_diff: {'Not-null': 1664243, 'Total': 9817530} 
-comp6_rate: {'Not-null': 477372, 'Total': 9817530} 
-comp6_inv: {'Not-null': 518579, 'Total': 9817530} 
-comp6_rate_percent_diff: {'Not-null': 191295, 'Total': 9817530} 
-comp7_rate: {'Not-null': 624434, 'Total': 9817530} 
-comp7_inv: {'Not-null': 705692, 'Total': 9817530} 
-comp7_rate_percent_diff: {'Not-null': 274850, 'Total': 9817530} 
-comp8_rate: {'Not-null': 3780823, 'Total': 9817530} 
-comp8_inv: {'Not-null': 3920704, 'Total': 9817530} 
-comp8_rate_percent_diff: {'Not-null': 1213486, 'Total': 9817530} 
-click_bool: {'Not-null': 9817530, 'Total': 9817530} 
-gross_bookings_usd: {'Not-null': 273801, 'Total': 9817530} 
-booking_bool: {'Not-null': 9817530, 'Total': 9817530} 
+srch_id: Non-NaN=9817530. Total=9817530 
+date_time: Non-NaN=9817530. Total=9817530 
+site_id: Non-NaN=9817530. Total=9817530 
+visitor_location_country_id: Non-NaN=9817530. Total=9817530 
+visitor_hist_starrating: Non-NaN=499858. Total=9817530 
+visitor_hist_adr_usd: Non-NaN=502154. Total=9817530 
+prop_country_id: Non-NaN=9817530. Total=9817530 
+prop_id: Non-NaN=9817530. Total=9817530 
+prop_starrating: Non-NaN=9817530. Total=9817530 
+prop_review_score: Non-NaN=9803041. Total=9817530 
+prop_brand_bool: Non-NaN=9817530. Total=9817530 
+prop_location_score1: Non-NaN=9817530. Total=9817530 
+prop_location_score2: Non-NaN=7660878. Total=9817530 
+prop_log_historical_price: Non-NaN=9817530. Total=9817530 
+position: Non-NaN=9817530. Total=9817530 
+price_usd: Non-NaN=9817530. Total=9817530 
+promotion_flag: Non-NaN=9817530. Total=9817530 
+srch_destination_id: Non-NaN=9817530. Total=9817530 
+srch_length_of_stay: Non-NaN=9817530. Total=9817530 
+srch_booking_window: Non-NaN=9817530. Total=9817530 
+srch_adults_count: Non-NaN=9817530. Total=9817530 
+srch_children_count: Non-NaN=9817530. Total=9817530 
+srch_room_count: Non-NaN=9817530. Total=9817530 
+srch_saturday_night_bool: Non-NaN=9817530. Total=9817530 
+srch_query_affinity_score: Non-NaN=629238. Total=9817530 
+orig_destination_distance: Non-NaN=6633161. Total=9817530 
+random_bool: Non-NaN=9817530. Total=9817530 
+comp1_rate: Non-NaN=233474. Total=9817530 
+comp1_inv: Non-NaN=251922. Total=9817530 
+comp1_rate_percent_diff: Non-NaN=183005. Total=9817530 
+comp2_rate: Non-NaN=4000109. Total=9817530 
+comp2_inv: Non-NaN=4208949. Total=9817530 
+comp2_rate_percent_diff: Non-NaN=1098709. Total=9817530 
+comp3_rate: Non-NaN=3028576. Total=9817530 
+comp3_inv: Non-NaN=3259102. Total=9817530 
+comp3_rate_percent_diff: Non-NaN=934651. Total=9817530 
+comp4_rate: Non-NaN=613980. Total=9817530 
+comp4_inv: Non-NaN=685637. Total=9817530 
+comp4_rate_percent_diff: Non-NaN=261664. Total=9817530 
+comp5_rate: Non-NaN=4399136. Total=9817530 
+comp5_inv: Non-NaN=4672925. Total=9817530 
+comp5_rate_percent_diff: Non-NaN=1664243. Total=9817530 
+comp6_rate: Non-NaN=477372. Total=9817530 
+comp6_inv: Non-NaN=518579. Total=9817530 
+comp6_rate_percent_diff: Non-NaN=191295. Total=9817530 
+comp7_rate: Non-NaN=624434. Total=9817530 
+comp7_inv: Non-NaN=705692. Total=9817530 
+comp7_rate_percent_diff: Non-NaN=274850. Total=9817530 
+comp8_rate: Non-NaN=3780823. Total=9817530 
+comp8_inv: Non-NaN=3920704. Total=9817530 
+comp8_rate_percent_diff: Non-NaN=1213486. Total=9817530 
+click_bool: Non-NaN=9817530. Total=9817530 
+gross_bookings_usd: Non-NaN=273801. Total=9817530 
+booking_bool: Non-NaN=9817530. Total=9817530 
