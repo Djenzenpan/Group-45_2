@@ -1,0 +1,73 @@
+---
+title: "Expedia Training Data-set Analysis"
+author: "SarahLynne Palomo"
+date: "21/04/2021"
+output: pdf_document
+highlight: tango
+---
+
+## Exploring **srch_id**
+
+Find the unique srch_id's and count how many of them are in the submission_sample data-set:
+```{r}
+# Load Training data-set
+tr <- read.csv("training_set_VU_DM.csv")
+
+# Find unique search id's
+uniq_srch <- unique(tr$srch_id)
+num_uniq_ids <- nrow(as.matrix(uniq_srch))
+head(uniq_srch, 10)
+tail(uniq_srch, 10)
+
+last_srch_id <- tail(uniq_srch, n=1)  # Highest srch_id in ascending list
+perc_missing_srch <- (1 - (num_uniq_ids/last_srch_id)) * 100
+perc_missing_srch
+```
+Here we can see that a good portion of srch_id's are missing from the training data-set sequence (40%)
+
+## Exploring **NULL values**
+
+```{r}
+#which(is.null(tr$srch_id))  # <-- this does not work!
+#which(tr$srch_id == "NULL")  # Not a real NULL value; it's only a string
+#which(tr$comp3_rate == "NULL") # testing function on a column that contains "NULL"
+
+# Create a new table for analyzing NULL stats
+df_null_ratios <- data.frame(matrix(ncol = 3, nrow = 54))
+names(df_null_ratios) <- list("Column_Name", "Number_of_Nulls", "Percentage_of_Rows")
+
+tr_row <- nrow(tr)  
+tr_col <- ncol(tr)
+i <- 0
+
+for (i in 1:tr_col) {
+  # Populate column names from the training set into new table
+  df_null_ratios[i, 1] <- names(tr)[i]      
+  
+  # Find the rows in the training set that contain string "NULL"
+  null_rows <- which(tr[,i] == "NULL")      
+
+  # Populate "NULL" counts into new table
+  num_nulls <- nrow(as.matrix(null_rows))
+  df_null_ratios[i, 2] <- num_nulls         
+  
+  # Populate percentage of counts into new table  
+  null_perc <- (num_nulls / tr_row) * 100
+  df_null_ratios[i, 3] <- null_perc         
+}
+
+df_null_ratios
+
+```
+Check the fields with more than 90% NULL values against the Assignment description of the data-set for significance!
+
+
+
+## Exploring **Date/Time**
+
+Dates are not in sequential order. It may be necessary to split *date_time* field into Date and Time.
+```{r}
+min(tr$date_time)
+max(tr$date_time)
+```
+
