@@ -6,35 +6,19 @@ output: pdf_document
 highlight: tango
 ---
 
-## Exploring **srch_id**
+## Exploring **NULL values**
 
-Find the unique srch_id's and count how many of them are in the submission_sample data-set:
 ```{r}
 # Load Training data-set
 tr <- read.csv("training_set_VU_DM.csv")
 
-# Find unique search id's
-uniq_srch <- unique(tr$srch_id)
-num_uniq_ids <- nrow(as.matrix(uniq_srch))
-head(uniq_srch, 10)
-tail(uniq_srch, 10)
-
-last_srch_id <- tail(uniq_srch, n=1)  # Highest srch_id in ascending list
-perc_missing_srch <- (1 - (num_uniq_ids/last_srch_id)) * 100
-perc_missing_srch
-```
-Here we can see that a good portion of srch_id's are missing from the training data-set sequence (40%)
-
-## Exploring **NULL values**
-
-```{r}
 #which(is.null(tr$srch_id))  # <-- this does not work!
 #which(tr$srch_id == "NULL")  # Not a real NULL value; it's only a string
 #which(tr$comp3_rate == "NULL") # testing function on a column that contains "NULL"
 
 # Create a new table for analyzing NULL stats
 df_null_ratios <- data.frame(matrix(ncol = 3, nrow = 54))
-names(df_null_ratios) <- list("Column_Name", "Number_of_Nulls", "Percentage_of_Rows")
+names(df_null_ratios) <- list("Column_Name", "NULL_Count", "NULL_Percentage")
 
 tr_row <- nrow(tr)  
 tr_col <- ncol(tr)
@@ -60,10 +44,30 @@ df_null_ratios
 
 ```
 Check the fields with more than 90% NULL values against the Assignment description of the data-set for significance!
+i.e. Not all NULLs can be converted to 0 since this would become a real value.
+
+---
+# Data-set Description
+
+## Exploring **srch_id**
+
+Find the unique srch_id's and count how many of them are in the submission_sample data-set:
+```{r}
+
+# Find unique search id's
+uniq_srch <- unique(tr$srch_id)
+num_uniq_srch <- nrow(as.matrix(uniq_srch))
+head(uniq_srch, 10)
+tail(uniq_srch, 10)
+
+last_srch_id <- tail(uniq_srch, n=1)  # Highest srch_id in (incidentally) ascending list
+perc_missing_srch <- (1 - (num_uniq_srch / last_srch_id)) * 100
+perc_missing_srch
+```
+Here, we can see that a good portion of *srch_id* values are missing from the training data-set sequence (40%)
 
 
-
-## Exploring **Date/Time**
+## Exploring **date_time**
 
 Dates are not in sequential order. It may be necessary to split *date_time* field into Date and Time.
 ```{r}
@@ -71,3 +75,23 @@ min(tr$date_time)
 max(tr$date_time)
 ```
 
+## Exploring **site_id**
+
+Number of website country locations
+```{r}
+uniq_site <- unique(tr$site_id)
+sort(uniq_site)
+
+```
+
+## Exploring **visitor_location_country_id**
+
+```{r}
+uniq_visitor_country <- unique(tr$visitor_location_country_id)
+sort(uniq_visitor_country)
+num_uniq_v_country <- nrow(as.matrix(uniq_visitor_country))
+max_uniq_v_country <- max(uniq_visitor_country)
+missing_v_countries_perc <- (max_uniq_v_country - num_uniq_v_country) / max_uniq_v_country * 100
+missing_v_countries_perc
+```
+9% of visitor countries are missing from the data-set
