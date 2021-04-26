@@ -1,7 +1,7 @@
 ---
 title: "Expedia Training Data-set Analysis"
 author: "SarahLynne Palomo"
-date: "21/04/2021"
+date: "26/04/2021"
 output: pdf_document
 highlight: tango
 ---
