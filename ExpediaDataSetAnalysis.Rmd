@@ -1,10 +1,15 @@
 ---
 title: "Expedia Training Data-set Analysis"
 author: "SarahLynne Palomo"
-date: "26/04/2021"
-output: pdf_document
+date: "27/04/2021"
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
 highlight: tango
 ---
+
+
 
 ## Exploring **NULL values**
 
@@ -13,7 +18,7 @@ highlight: tango
 tr <- read.csv("training_set_VU_DM.csv")
 
 #which(is.null(tr$srch_id))  # <-- this does not work!
-#which(tr$srch_id == "NULL")  # Not a real NULL value; it's only a string
+#which(tr$srch_id == "NULL")  # Not a real NULL value; it's a string
 #which(tr$comp3_rate == "NULL") # testing function on a column that contains "NULL"
 
 # Create a new table for analyzing NULL stats
@@ -43,12 +48,13 @@ for (i in 1:tr_col) {
 df_null_ratios
 
 ```
-Check the fields with more than 90% NULL values against the Assignment description of the data-set for significance!
-i.e. Not all NULLs can be converted to 0 since this would become a real value.
+Check the fields with more than 90% NULL values against the following descriptions of the data-set for significance!
+(e.g. Not all NULLs can be converted to 0 since these would become actual values.)
 
 ---
-# Data-set Description
+# Data-set Descriptions
 
+---
 ## Exploring **srch_id**
 
 Find the unique srch_id's and count how many of them are in the submission_sample data-set:
@@ -66,15 +72,17 @@ perc_missing_srch
 ```
 Here, we can see that a good portion of *srch_id* values are missing from the training data-set sequence (40%)
 
-
+---
 ## Exploring **date_time**
 
-Dates are not in sequential order. It may be necessary to split *date_time* field into Date and Time.
+Dates are not in sequential order. It may be necessary to split *date_time* field into Date and Time fields.
 ```{r}
 min(tr$date_time)
 max(tr$date_time)
+
 ```
 
+---
 ## Exploring **site_id**
 
 Number of website country locations
@@ -84,6 +92,7 @@ sort(uniq_site)
 
 ```
 
+---
 ## Exploring **visitor_location_country_id**
 
 ```{r}
@@ -93,5 +102,43 @@ num_uniq_v_country <- nrow(as.matrix(uniq_visitor_country))
 max_uniq_v_country <- max(uniq_visitor_country)
 missing_v_countries_perc <- (max_uniq_v_country - num_uniq_v_country) / max_uniq_v_country * 100
 missing_v_countries_perc
+
 ```
 9% of visitor countries are missing from the data-set
+
+---
+## Exploring **visitor_hist_starrating**
+
+```{r}
+# Find the range of mean hotel rating scores of the non-NULL set
+vhs <- subset(tr$visitor_hist_starrating, tr$visitor_hist_starrating != "NULL")
+vhs <- as.numeric(vhs)
+range(vhs)
+hist(vhs, xlab = "visitor_hist_starrating", main = "Histogram of mean hotel rating scores")
+
+```
+Note that the mean hotel rating (visitor_hist_starrating) is bound to an individual (srch_id)
+
+---
+## Exploring **visitor_hist_adr_usd**
+
+```{r}
+#Find the range of mean USD price per night of the non-NULL set
+vha_usd <- subset(tr$visitor_hist_adr_usd, tr$visitor_hist_adr_usd != "NULL")
+vha_usd <- as.numeric(vha_usd)
+range(vha_usd)
+hist(vha_usd, xlab = "visitor_hist_adr_usd", main = "Histogram of mean USD paid per night")
+
+```
+Most common mean price per night is 200 USD.
+
+---
+## Exploring **prop_country_id**
+
+```{r}
+uniq_prop_country <- unique(tr$prop_country_id)
+sort(uniq_prop_country)
+nrow(as.matrix(uniq_prop_country))
+
+```
+
