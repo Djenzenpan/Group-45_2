@@ -3,15 +3,15 @@ title: "Expedia Training Data-set Analysis"
 author: "SarahLynne Palomo"
 date: "27/04/2021"
 output:
-  pdf_document: default
   html_document:
     df_print: paged
+  pdf_document: default
 highlight: tango
 ---
 
 
 
-## Exploring **NULL values**
+## Exploring **NULL** values
 
 ```{r}
 # Load Training data-set
@@ -51,16 +51,18 @@ df_null_ratios
 Check the fields with more than 90% NULL values against the following descriptions of the data-set for significance!
 (e.g. Not all NULLs can be converted to 0 since these would become actual values.)
 
+
 ---
 # Data-set Descriptions
 
+
 ---
 ## Exploring **srch_id**
+Data Type: integer
+Description: The ID of the search
 
-Find the unique srch_id's and count how many of them are in the submission_sample data-set:
 ```{r}
-
-# Find unique search id's
+# Find unique search id's and count how many of them are in the submission_sample data-set
 uniq_srch <- unique(tr$srch_id)
 num_uniq_srch <- nrow(as.matrix(uniq_srch))
 head(uniq_srch, 10)
@@ -69,31 +71,41 @@ tail(uniq_srch, 10)
 last_srch_id <- tail(uniq_srch, n=1)  # Highest srch_id in (incidentally) ascending list
 perc_missing_srch <- (1 - (num_uniq_srch / last_srch_id)) * 100
 perc_missing_srch
+
 ```
-Here, we can see that a good portion of *srch_id* values are missing from the training data-set sequence (40%)
+Observations: Here, we can see that a good portion of *srch_id* values are missing from the training data-set sequence (40%)
+
 
 ---
 ## Exploring **date_time**
+Data Type: Date/time
+Description: Date and time of the search
 
-Dates are not in sequential order. It may be necessary to split *date_time* field into Date and Time fields.
 ```{r}
 min(tr$date_time)
 max(tr$date_time)
 
 ```
+Observations: Dates are not in sequential order. It may be necessary to split *date_time* field into Date and Time fields.
+
 
 ---
 ## Exploring **site_id**
+Data Type: Integer
+Description: ID of the Expedia point of sale (i.e. Expedia.com, Expedia.co.uk, Expedia.co.jp, ..)
 
-Number of website country locations
 ```{r}
 uniq_site <- unique(tr$site_id)
 sort(uniq_site)
 
 ```
+Observations: sequence is complete! Bookings can be made from multiple countries. *site_id* is specific to *srch_id*
+
 
 ---
 ## Exploring **visitor_location_country_id**
+Data Type: Integer
+Description: The ID of the country the customer is located
 
 ```{r}
 uniq_visitor_country <- unique(tr$visitor_location_country_id)
@@ -104,10 +116,13 @@ missing_v_countries_perc <- (max_uniq_v_country - num_uniq_v_country) / max_uniq
 missing_v_countries_perc
 
 ```
-9% of visitor countries are missing from the data-set
+Observations: 9% of visitor countries are missing from the data-set. TODO: check whether *visitor_location_country_id* is specific to *srch_id*
+
 
 ---
 ## Exploring **visitor_hist_starrating**
+Data Type: Float
+Description: The mean star rating of hotels the customer has previously purchased; null signifies there is no purchase history on the customer
 
 ```{r}
 # Find the range of mean hotel rating scores of the non-NULL set
@@ -117,10 +132,13 @@ range(vhs)
 hist(vhs, xlab = "visitor_hist_starrating", main = "Histogram of mean hotel rating scores")
 
 ```
-Note that the mean hotel rating (visitor_hist_starrating) is bound to an individual (srch_id)
+Observations: Note that the mean hotel rating (*visitor_hist_starrating*) is specific to an individual (*srch_id*)
+
 
 ---
 ## Exploring **visitor_hist_adr_usd**
+Data Type: Float
+Description: The mean price per night (in US$) of the hotels the customer has previously purchased; null signifies there is no purchase history on the customer
 
 ```{r}
 #Find the range of mean USD price per night of the non-NULL set
@@ -130,15 +148,212 @@ range(vha_usd)
 hist(vha_usd, xlab = "visitor_hist_adr_usd", main = "Histogram of mean USD paid per night")
 
 ```
-Most common mean price per night is 200 USD.
+Observations: Most common mean price per night is 200 USD.
+
 
 ---
 ## Exploring **prop_country_id**
+Data Type: Integer
+Description: The ID of the country the hotel is located in
 
 ```{r}
 uniq_prop_country <- unique(tr$prop_country_id)
 sort(uniq_prop_country)
-nrow(as.matrix(uniq_prop_country))
+nrow(as.matrix(uniq_prop_country)) # 230
+(230-172) / 230 * 100
+
+```
+Observations: 58/230 of property countries are missing from the data-set sequence (25%). *prop_country_id* is specific to *prop_id*
+
+
+---
+## Exploring **prop_id**
+Data Type: Integer
+Description: The ID of the hotel
+
+```{r}
+uniq_prop_id <- unique(tr$prop_id)
+#sort(uniq_prop_id)
+nrow(as.matrix(uniq_prop_id))  # 129113
+range(uniq_prop_id)  # 1 to 140821
+(140821 - 129113) / 140821 * 100
+
+```
+Observations: 11708/140821 of property id's are missing from from the data-set sequence (8.3%). 
+
+
+---
+## Exploring **prop_starrating**
+Data Type: Integer
+Description: The star rating of the hotel, from 1 to 5, in increments of 1. A 0 indicates the property has no stars, the star rating is not known or cannot be publicized
+
+```{r}
+nrow(as.matrix(tr$prop_starrating))
+hist(tr$prop_starrating, main = "Histogram of hotel star ratings")
+
+prop_nostars <- subset(tr$prop_starrating, tr$prop_starrating == 0)
+nrow(as.matrix(prop_nostars))
+169572 / 4958347 * 100
+
+```
+
+Observations: 
+Property star rating (*prop_starrating*) is specific to each property listing (*prop_id*). 
+Most properties are rated 3 stars.
+169572/4958347 of property listings have 0 stars (3.4%)
+
+
+---
+## Exploring **prop_review_score**
+Data Type: Float
+Description: The mean customer review score for the hotel on a scale out of 5, rounded to 0.5 increments. A 0 means there have been no reviews, null that the information is not available
+
+```{r}
+#subset(tr$prop_review_score, tr$prop_id == 10404)  # example hotel
+hist(tr$prop_review_score, main = "Histogram of accommodation mean review score")
+subset(tr, is.null(tr$prop_review_score))
+
+```
+Observations: 
+*prop_review_score* is specific to *prop_id*. 
+Majority rating is 4.0 closely followed by 4.5. 
+No null values found.
+
+
+---
+## Exploring **prop_brand_bool**
+Data Type: Integer
+Description: +1 if the hotel is part of a major hotel chain; 0 if it is an independent hotel
+
+```{r}
+hist(tr$prop_brand_bool, main = "Major hotel chain (1) vs independent hotel (0)")
+chain_hotel <- subset(tr$prop_brand_bool, tr$prop_brand_bool == 1)
+nrow(as.matrix(chain_hotel))  # 3147060
+ind_hotel <- subset(tr$prop_brand_bool, tr$prop_brand_bool == 0)
+nrow(as.matrix(ind_hotel))  # 1811287
+
+nrow(as.matrix(tr$prop_brand_bool))
+3147060 / 4958347 * 100
+1811287 / 4958347 * 100
+
+```
+
+Observations: Hotel chains make up the majority of accommodation listings (63.5%) compared to independent hotels (36.5%)
+
+
+---
+## Exploring **prop_location_score1**
+Data Type: Float
+Description: A (first) score outlining the desirability of a hotel’s location
+
+```{r}
+range(tr$prop_location_score1)
+hist(tr$prop_location_score1, main = "Histogram of hotel location's desirability score (1st)")
+
+```
+
+Observations: First score only goes up to 6.98 (out of what total??). 
+Questions: What is better: a high or low score? Is this score visible to the customer while booking on the website?
+
+
+---
+## Exploring **prop_location_score2**
+Data Type: Float
+Description: A (second) score outlining the desirability of the hotel’s location
+
+```{r}
+pls2 <- subset(tr$prop_location_score2, tr$prop_location_score2 != "NULL")
+pls2 <- as.numeric(pls2)
+range(pls2)
+hist(pls2, xlab = "prop_location_score2", main = "Histogram of hotel location's desirability score (2nd)")
+
+```
+
+Observations: Second score data appear to be logarithmic. 22% NULL values
+Questions: Why have a second score? What is it for compared to the first score?
+
+
+---
+## Exploring **prop_log_historical_price**
+Data Type: Float
+Description: The logarithm of the mean price of the hotel over the last trading period. A 0 will occur if the hotel was not sold in that period
+
+```{r}
+range(tr$prop_log_historical_price)
+hist(tr$prop_log_historical_price, main = "Histogram of log of mean hotel price in last trading period")
+```
+Observations: Plot of mean hotel price has a somewhat normal form
+Questions: What is the calculation for the last trading period?
+
+
+---
+## Exploring **price_usd**
+Data Type: Float
+Description: Displayed price of the hotel for the given search. Note that different countries have different conventions regarding displaying taxes and fees and the value may be per night or for the whole stay
+
+```{r}
+range(tr$price_usd)  # 0 to 19726328  <--- seriously... WTF?
+which.max(tr$price_usd)  # find the row index of this *ridiculously expensive* hotel
+tr[1168567,]  # data-set entry for the most expensive hotel of them all
+
+price_hotel <- subset(tr$price_usd, tr$price_usd > 0)
+price_hotel <- sort(price_hotel)
+tail(price_hotel)   # looks like it wasn't just an outlier. Wow. Who books this stuff online??
+head(price_hotel)
+hist(tr$price_usd, main = "Histogram of hotel prices in USD")
+```
+
+Observations: 
+Need to check *price_usd* against *site_id* and *srch_length_of_stay* to normalise the value to per night due to different taxes and fees per country.
+There are lots of 0's and weird values that increment in the lower end of the data. We will definitely have to fix this.
+Questions: Are the 0 prices for searches that didn't amount to a booking? Or is it a currency conversion error?
+
+---
+## Exploring **promotion_flag**
+Data Type: Integer
+Description: +1 if the hotel had a sale price promotion specifically displayed
+
+```{r}
+hist(tr$promotion_flag, main = "Histogram of promotional flag")
+promo_yes <- subset(tr$promotion_flag, tr$promotion_flag == 1)
+nrow(as.matrix(promo_yes))  # 1069118
+promo_no <- subset(tr$promotion_flag, tr$promotion_flag == 0)
+nrow(as.matrix(promo_no))  # 3889229
+1069118 / 4958347 * 100  # 21.6%
+3889229 / 4958347 * 100  # 78.4%
+
+```
+Observations: 21.6% of accommodations are listed with a promotional sale price
+
+
+---
+## Exploring **srch_destination_id**
+Data Type: Integer
+Description: ID of the destination where the hotel search was performed
+
+```{r}
+uniq_dest_id <- unique(tr$srch_destination_id)
+uniq_dest_id <- sort(uniq_dest_id)
+range(uniq_dest_id)  #   2 to 28416
+nrow(as.matrix(uniq_dest_id))  # 18127
+(28416 - 18127) / 28416 * 100  # 36.20847
+hist(tr$srch_destination_id, main = "Histogram of destination IDs")
+
+```
+Observations: Some destinations are more popular than others (TODO: find out what ones are these). 10289/28416 of destination ids are missing from the data-set sequence (36%)
+
+
+---
+## Exploring **srch_length_of_stay**
+Data Type: Integer
+Description: Number of nights stay that was searched
+
+```{r}
+hist(tr$srch_length_of_stay)
+range(tr$srch_length_of_stay)
+
+num_nights10 <- subset(tr$srch_length_of_stay, tr$srch_length_of_stay <= 10)
+hist(num_nights10, main = "Histogram number of nights searched (<= 10)")
 
 ```
 
