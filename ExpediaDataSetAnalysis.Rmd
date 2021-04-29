@@ -323,7 +323,7 @@ nrow(as.matrix(promo_no))  # 3889229
 3889229 / 4958347 * 100  # 78.4%
 
 ```
-Observations: 21.6% of accommodations are listed with a promotional sale price
+Observations: 21.6% of accommodations are listed with a promotional sale price. This really should be type boolean instead of integer. No NULLs found.
 
 
 ---
@@ -409,3 +409,112 @@ hist(tr$srch_room_count, main = "Histogram of number of rooms")
 
 ```
 Observations: Vast majority of bookings are made for 1 room only
+
+
+---
+## Exploring **srch_saturday_night_bool**
+Data Type: Boolean
+Description: +1 if the stay includes a Saturday night, starts from Thursday with a length of stay is less than or equal to 4 nights (i.e. weekend); otherwise 0
+
+```{r}
+hist(tr$srch_saturday_night_bool, main = "Histogram of Saturday night boolean")
+saturday_no <- subset(tr$srch_saturday_night_bool, tr$srch_saturday_night_bool == 0)
+nrow(as.matrix(saturday_no))  # 2468202
+saturday_yes <- subset(tr$srch_saturday_night_bool, tr$srch_saturday_night_bool == 1)
+nrow(as.matrix(saturday_yes))  # 2490145
+
+```
+
+Observations: Number of bookings made including Saturday night (2490145) is almost the same as excluding (2468202)
+
+
+---
+## Exploring **srch_query_affinity_score**
+Data Type: Float
+Description: The log of the probability a hotel will be clicked on in Internet searches (hence the values are negative) A null signifies there are no data (i.e. hotel did not register in any searches)
+
+```{r}
+#range(tr$srch_query_affinity_score, na.rm = FALSE)  # excluding NULL  <-- this doesn't work properly
+
+sqas <- subset(tr$srch_query_affinity_score, tr$srch_query_affinity_score != "NULL")
+sqas <- as.numeric(sqas)
+range(sqas)
+hist(sqas, xlab = "srch_query_affinity_score", main = "Histogram of search query affinity score")
+
+```
+
+Observations: 93.6% of the data values are NULL. Even though the aata is officially type float, it was actually type char so it first had to be converted to type numeric for the histogram and to give the correct range. Histogram excludes NULL values.
+
+
+---
+## Exploring **orig_destination_distance**
+Data Type: Float
+Description: Physical distance between the hotel and the customer at the time of search. A null means the distance could not be calculated
+
+```{r}
+#range(tr$orig_destination_distance)
+o2d_dist <- subset(tr$orig_destination_distance, tr$orig_destination_distance != "NULL")
+o2d_dist <- as.numeric(o2d_dist)
+range(o2d_dist)
+hist(o2d_dist)
+
+```
+
+Observations: 32.4% of the data values are NULL. Converted type char to numeric. Histogram excludes NULL values. It's not clear in what units the distance is calculated in. Most bookings are made when the customer is close to the hotel
+
+
+---
+## Exploring **random_bool**
+Data Type: Boolean
+Description: +1 when the displayed sort was random, 0 when the normal sort order was displayed
+
+```{r}
+hist(tr$random_bool, main = "Histogram of random boolean on display sort")
+sort_random <- subset(tr$random_bool, tr$random_bool == 1)
+nrow(as.matrix(sort_random))  # 1467177
+sort_normal <- subset(tr$random_bool, tr$random_bool == 0)
+nrow(as.matrix(sort_normal))  # 3491170
+1467177 / tr_row * 100  # 29.59004
+3491170 / tr_row * 100  # 70.40996
+```
+Observations: Random sort display = 29.6%; Normal sort display = 70.4%
+
+
+---
+## Exploring **comp1_rate**
+Data Type: Integer
+Description: +1 if Expedia has a lower price than competitor 1 for the hotel; 0 if the same; -1 if Expedia’s price is higher than competitor 1; null signifies there is no competitive data
+
+```{r}
+c1_rate <- subset(tr$comp1_rate, tr$comp1_rate != "NULL")
+c1_rate <- as.numeric(c1_rate)
+hist(c1_rate)
+
+c1_rate_lower <- subset(c1_rate, c1_rate == 1)
+c1_rate_same <- subset(c1_rate, c1_rate == 0)
+c1_rate_higher <- subset(c1_rate, c1_rate == -1)
+
+nrow(as.matrix(c1_rate_lower))  # 67256
+nrow(as.matrix(c1_rate_same))  # 42959
+nrow(as.matrix(c1_rate_higher))  # 9715
+
+nrow(as.matrix(c1_rate))  # 119930
+
+67256 / 119930 * 100  # 56.07938
+42959 / 119930 * 100  # 35.82006
+9715 / 119930 * 100   # 8.100559
+
+```
+
+Observations: Data contains 97.6% NULL values but we cannot change these to 0 as NULL has a meaning. Of the remaining data - 56.1% Expedia has a lower price; 35.8% Expedia's price is the same as competitor; 8.1% Expedia has a higher price.
+
+
+---
+## Exploring **comp1_inv**
+Data Type: +1 if competitor 1 does not have availability in the hotel; 0 if both Expedia and competitor 1 have availability; null signifies there is no competitive data
+
+```{r}
+
+```
+
+Observations: 97.4% of values are NULL
