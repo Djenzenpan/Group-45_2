@@ -1,7 +1,7 @@
 ---
 title: "Expedia Training Data-set Analysis"
 author: "SarahLynne Palomo"
-date: "27/04/2021"
+date: "29/04/2021"
 output:
   html_document:
     df_print: paged
@@ -349,11 +349,63 @@ Data Type: Integer
 Description: Number of nights stay that was searched
 
 ```{r}
-hist(tr$srch_length_of_stay)
+hist(tr$srch_length_of_stay, main = "Histogram number of nights searched (all)")
 range(tr$srch_length_of_stay)
 
 num_nights10 <- subset(tr$srch_length_of_stay, tr$srch_length_of_stay <= 10)
 hist(num_nights10, main = "Histogram number of nights searched (<= 10)")
 
 ```
+Observations: Data dsitribution appears logarithmic. Most common stay duration is 1 night then 2 nights.
 
+---
+##Exploring **srch_booking_window**
+Data Type: Integer
+Decription: Number of days in the future the hotel stay started from the search date
+
+```{r}
+range(tr$srch_booking_window)
+hist(tr$srch_booking_window, main = "Histogram of booking window")
+days_future100 <- subset(tr$srch_booking_window, tr$srch_booking_window <= 100)
+hist(days_future100, main = "Histogram of booking window (100 days)")
+```
+Observations: Data dsitribution appears logarithmic. Most common booking window is within 5 days of stay
+
+
+---
+## Exploring **srch_adults_count**
+Data Type: Integer
+Description: The number of adults specified in the hotel room
+
+```{r}
+range(tr$srch_adults_count)
+hist(tr$srch_adults_count, main = "Histogram of number of adults per booking")
+
+```
+Observations: Most common hotel booking is for 2 adults per room.
+
+
+---
+## Exploring **srch_children_count**
+Data Type: Integer
+Description: The number of (extra occupancy) children specified in the hotel room
+
+```{r}
+range(tr$srch_children_count)
+hist(tr$srch_children_count, main = "Histogram of number of children per booking")
+
+```
+Observations: Most bookings are made without including children
+
+
+---
+## Exploring **srch_room_count**
+Data Type: Integer
+Description: Number of hotel rooms specified in the search
+
+```{r}
+range(tr$srch_room_count)
+hist(tr$srch_room_count, main = "Histogram of number of rooms")
+
+```
+Observations: Vast majority of bookings are made for 1 room only
