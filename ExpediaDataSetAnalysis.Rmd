@@ -1,7 +1,7 @@
 ---
 title: "Expedia Training Data-set Analysis"
 author: "SarahLynne Palomo"
-date: "29/04/2021"
+date: "06/05/2021"
 output:
   html_document:
     df_print: paged
@@ -53,13 +53,13 @@ Check the fields with more than 90% NULL values against the following descriptio
 
 
 ---
-# Data-set Descriptions
+# Data-set Variables
 
 
 ---
 ## Exploring **srch_id**
-Data Type: integer
-Description: The ID of the search
+*Data Type:* integer
+*Description:* The ID of the search
 
 ```{r}
 # Find unique search id's and count how many of them are in the submission_sample data-set
@@ -73,39 +73,39 @@ perc_missing_srch <- (1 - (num_uniq_srch / last_srch_id)) * 100
 perc_missing_srch
 
 ```
-Observations: Here, we can see that a good portion of *srch_id* values are missing from the training data-set sequence (40%)
+*Observations:* Here, we can see that a good portion of *srch_id* values are missing from the training data-set sequence (40%)
 
 
 ---
 ## Exploring **date_time**
-Data Type: Date/time
-Description: Date and time of the search
+*Data Type:* Date/time
+*Description:* Date and time of the search
 
 ```{r}
 min(tr$date_time)
 max(tr$date_time)
 
 ```
-Observations: Dates are not in sequential order. It may be necessary to split *date_time* field into Date and Time fields.
+*Observations:* Dates are not in sequential order. It may be necessary to split *date_time* field into Date and Time fields. (Kaggle competition host says this is browser time of the user making a query)
 
 
 ---
 ## Exploring **site_id**
-Data Type: Integer
-Description: ID of the Expedia point of sale (i.e. Expedia.com, Expedia.co.uk, Expedia.co.jp, ..)
+*Data Type:* Integer
+*Description:* ID of the Expedia point of sale (i.e. Expedia.com, Expedia.co.uk, Expedia.co.jp, ..)
 
 ```{r}
 uniq_site <- unique(tr$site_id)
 sort(uniq_site)
 
 ```
-Observations: sequence is complete! Bookings can be made from multiple countries. *site_id* is specific to *srch_id*
+*Observations:* sequence is complete! Bookings can be made from multiple countries. *site_id* is specific to *srch_id*
 
 
 ---
 ## Exploring **visitor_location_country_id**
-Data Type: Integer
-Description: The ID of the country the customer is located
+*Data Type:* Integer
+*Description:* The ID of the country the customer is located
 
 ```{r}
 uniq_visitor_country <- unique(tr$visitor_location_country_id)
@@ -116,13 +116,13 @@ missing_v_countries_perc <- (max_uniq_v_country - num_uniq_v_country) / max_uniq
 missing_v_countries_perc
 
 ```
-Observations: 9% of visitor countries are missing from the data-set. TODO: check whether *visitor_location_country_id* is specific to *srch_id*
+*Observations:* 9% of visitor countries are missing from the data-set. TODO: check whether *visitor_location_country_id* is specific to *srch_id*
 
 
 ---
 ## Exploring **visitor_hist_starrating**
-Data Type: Float
-Description: The mean star rating of hotels the customer has previously purchased; null signifies there is no purchase history on the customer
+*Data Type:* Float
+*Description:* The mean star rating of hotels the customer has previously purchased; null signifies there is no purchase history on the customer
 
 ```{r}
 # Find the range of mean hotel rating scores of the non-NULL set
@@ -132,13 +132,13 @@ range(vhs)
 hist(vhs, xlab = "visitor_hist_starrating", main = "Histogram of mean hotel rating scores")
 
 ```
-Observations: Note that the mean hotel rating (*visitor_hist_starrating*) is specific to an individual (*srch_id*)
+*Observations:* 94.9% NULL values. Note that the mean hotel rating (*visitor_hist_starrating*) is specific to an individual (*srch_id*). We can potentially replace null values with a calculated value of the means.
 
 
 ---
 ## Exploring **visitor_hist_adr_usd**
-Data Type: Float
-Description: The mean price per night (in US$) of the hotels the customer has previously purchased; null signifies there is no purchase history on the customer
+*Data Type:* Float
+*Description:* The mean price per night (in US$) of the hotels the customer has previously purchased; null signifies there is no purchase history on the customer
 
 ```{r}
 #Find the range of mean USD price per night of the non-NULL set
@@ -148,13 +148,13 @@ range(vha_usd)
 hist(vha_usd, xlab = "visitor_hist_adr_usd", main = "Histogram of mean USD paid per night")
 
 ```
-Observations: Most common mean price per night is 200 USD.
+*Observations:* 94.89% NULL values. Most common mean price per night is 200 USD.
 
 
 ---
 ## Exploring **prop_country_id**
-Data Type: Integer
-Description: The ID of the country the hotel is located in
+*Data Type:* Integer
+*Description:* The ID of the country the hotel is located in
 
 ```{r}
 uniq_prop_country <- unique(tr$prop_country_id)
@@ -163,12 +163,12 @@ nrow(as.matrix(uniq_prop_country)) # 230
 (230-172) / 230 * 100
 
 ```
-Observations: 58/230 of property countries are missing from the data-set sequence (25%). *prop_country_id* is specific to *prop_id*
+*Observations:* 58/230 of property countries are missing from the data-set sequence (25%). *prop_country_id* is specific to *prop_id*
 
 
 ---
 ## Exploring **prop_id**
-Data Type: Integer
+*Data Type:* Integer
 Description: The ID of the hotel
 
 ```{r}
@@ -179,13 +179,13 @@ range(uniq_prop_id)  # 1 to 140821
 (140821 - 129113) / 140821 * 100
 
 ```
-Observations: 11708/140821 of property id's are missing from from the data-set sequence (8.3%). 
+*Observations:* 11708/140821 of property id's are missing from from the data-set sequence (8.3%). 
 
 
 ---
 ## Exploring **prop_starrating**
-Data Type: Integer
-Description: The star rating of the hotel, from 1 to 5, in increments of 1. A 0 indicates the property has no stars, the star rating is not known or cannot be publicized
+*Data Type:* Integer
+*Description:* The star rating of the hotel, from 1 to 5, in increments of 1. A 0 indicates the property has no stars, the star rating is not known or cannot be publicized
 
 ```{r}
 nrow(as.matrix(tr$prop_starrating))
@@ -197,7 +197,7 @@ nrow(as.matrix(prop_nostars))
 
 ```
 
-Observations: 
+*Observations:* 
 Property star rating (*prop_starrating*) is specific to each property listing (*prop_id*). 
 Most properties are rated 3 stars.
 169572/4958347 of property listings have 0 stars (3.4%)
@@ -205,8 +205,8 @@ Most properties are rated 3 stars.
 
 ---
 ## Exploring **prop_review_score**
-Data Type: Float
-Description: The mean customer review score for the hotel on a scale out of 5, rounded to 0.5 increments. A 0 means there have been no reviews, null that the information is not available
+*Data Type:* Float
+*Description:* The mean customer review score for the hotel on a scale out of 5, rounded to 0.5 increments. A 0 means there have been no reviews, null that the information is not available
 
 ```{r}
 #subset(tr$prop_review_score, tr$prop_id == 10404)  # example hotel
@@ -214,7 +214,7 @@ hist(tr$prop_review_score, main = "Histogram of accommodation mean review score"
 subset(tr, is.null(tr$prop_review_score))
 
 ```
-Observations: 
+*Observations:* 
 *prop_review_score* is specific to *prop_id*. 
 Majority rating is 4.0 closely followed by 4.5. 
 No null values found.
@@ -222,8 +222,8 @@ No null values found.
 
 ---
 ## Exploring **prop_brand_bool**
-Data Type: Integer
-Description: +1 if the hotel is part of a major hotel chain; 0 if it is an independent hotel
+*Data Type:* Integer
+*Description:* +1 if the hotel is part of a major hotel chain; 0 if it is an independent hotel
 
 ```{r}
 hist(tr$prop_brand_bool, main = "Major hotel chain (1) vs independent hotel (0)")
@@ -238,13 +238,13 @@ nrow(as.matrix(tr$prop_brand_bool))
 
 ```
 
-Observations: Hotel chains make up the majority of accommodation listings (63.5%) compared to independent hotels (36.5%)
+*Observations:* Hotel chains make up the majority of accommodation listings (63.5%) compared to independent hotels (36.5%)
 
 
 ---
 ## Exploring **prop_location_score1**
-Data Type: Float
-Description: A (first) score outlining the desirability of a hotel’s location
+*Data Type:* Float
+*Description:* A (first) score outlining the desirability of a hotel’s location
 
 ```{r}
 range(tr$prop_location_score1)
@@ -252,14 +252,14 @@ hist(tr$prop_location_score1, main = "Histogram of hotel location's desirability
 
 ```
 
-Observations: First score only goes up to 6.98 (out of what total??). 
-Questions: What is better: a high or low score? Is this score visible to the customer while booking on the website?
+*Observations:* First score only goes up to 6.98 (out of what total??). 
+*Questions:* What is better: a high or low score? Is this score visible to the customer while booking on the website? (Guido's answer: don't know; no information is availble on the kaggle site)
 
 
 ---
 ## Exploring **prop_location_score2**
-Data Type: Float
-Description: A (second) score outlining the desirability of the hotel’s location
+*Data Type:* Float
+*Description:* A (second) score outlining the desirability of the hotel’s location
 
 ```{r}
 pls2 <- subset(tr$prop_location_score2, tr$prop_location_score2 != "NULL")
@@ -269,27 +269,27 @@ hist(pls2, xlab = "prop_location_score2", main = "Histogram of hotel location's 
 
 ```
 
-Observations: Second score data appear to be logarithmic. 22% NULL values
-Questions: Why have a second score? What is it for compared to the first score?
+*Observations:* 22% NULL values. Second score data appear to be logarithmic. 
+*Questions:* Why have a second score? What is it for compared to the first score? (Guido's answer: don't know but don't disregard these features as they may still be useful)
 
 
 ---
 ## Exploring **prop_log_historical_price**
-Data Type: Float
-Description: The logarithm of the mean price of the hotel over the last trading period. A 0 will occur if the hotel was not sold in that period
+*Data Type:* Float
+*Description:* The logarithm of the mean price of the hotel over the last trading period. A 0 will occur if the hotel was not sold in that period
 
 ```{r}
 range(tr$prop_log_historical_price)
 hist(tr$prop_log_historical_price, main = "Histogram of log of mean hotel price in last trading period")
 ```
-Observations: Plot of mean hotel price has a somewhat normal form
-Questions: What is the calculation for the last trading period?
+*Observations:* Plot of mean hotel price has a somewhat normal form
+*Questions:* What is the definition for the last trading period? (Guido's answer: don't know)
 
 
 ---
 ## Exploring **price_usd**
-Data Type: Float
-Description: Displayed price of the hotel for the given search. Note that different countries have different conventions regarding displaying taxes and fees and the value may be per night or for the whole stay
+*Data Type:* Float
+*Description:* Displayed price of the hotel for the given search. Note that different countries have different conventions regarding displaying taxes and fees and the value may be per night or for the whole stay
 
 ```{r}
 range(tr$price_usd)  # 0 to 19726328  <--- seriously... WTF?
@@ -303,15 +303,15 @@ head(price_hotel)
 hist(tr$price_usd, main = "Histogram of hotel prices in USD")
 ```
 
-Observations: 
+*Observations:* 
 Need to check *price_usd* against *site_id* and *srch_length_of_stay* to normalise the value to per night due to different taxes and fees per country.
 There are lots of 0's and weird values that increment in the lower end of the data. We will definitely have to fix this.
-Questions: Are the 0 prices for searches that didn't amount to a booking? Or is it a currency conversion error?
+*Questions:* Are the 0 prices for searches that didn't amount to a booking? Or is it a currency conversion error? (Guido's answer: "I think its fair to assume that a 0 value is an error in the data.") (Kaggle competition host suggests to remove/correct the extremely high-priced outliers)
 
 ---
 ## Exploring **promotion_flag**
-Data Type: Integer
-Description: +1 if the hotel had a sale price promotion specifically displayed
+*Data Type:* Integer
+*Description:* +1 if the hotel had a sale price promotion specifically displayed
 
 ```{r}
 hist(tr$promotion_flag, main = "Histogram of promotional flag")
@@ -323,13 +323,13 @@ nrow(as.matrix(promo_no))  # 3889229
 3889229 / 4958347 * 100  # 78.4%
 
 ```
-Observations: 21.6% of accommodations are listed with a promotional sale price. This really should be type boolean instead of integer. No NULLs found.
+*Observations:* 21.6% of accommodations are listed with a promotional sale price. This really should be type boolean instead of integer. No NULLs found.
 
 
 ---
 ## Exploring **srch_destination_id**
-Data Type: Integer
-Description: ID of the destination where the hotel search was performed
+*Data Type:* Integer
+*Description:* ID of the destination where the hotel search was performed
 
 ```{r}
 uniq_dest_id <- unique(tr$srch_destination_id)
@@ -340,13 +340,13 @@ nrow(as.matrix(uniq_dest_id))  # 18127
 hist(tr$srch_destination_id, main = "Histogram of destination IDs")
 
 ```
-Observations: Some destinations are more popular than others (TODO: find out what ones are these). 10289/28416 of destination ids are missing from the data-set sequence (36%)
+*Observations:* Some destinations are more popular than others (TODO: find out what ones are these). 10289/28416 of destination ids are missing from the data-set sequence (36%)
 
 
 ---
 ## Exploring **srch_length_of_stay**
-Data Type: Integer
-Description: Number of nights stay that was searched
+*Data Type:* Integer
+*Description:* Number of nights stay that was searched
 
 ```{r}
 hist(tr$srch_length_of_stay, main = "Histogram number of nights searched (all)")
@@ -356,12 +356,12 @@ num_nights10 <- subset(tr$srch_length_of_stay, tr$srch_length_of_stay <= 10)
 hist(num_nights10, main = "Histogram number of nights searched (<= 10)")
 
 ```
-Observations: Data dsitribution appears logarithmic. Most common stay duration is 1 night then 2 nights.
+*Observations:* Data dsitribution appears logarithmic. Most common stay duration is 1 night then 2 nights.
 
 ---
 ##Exploring **srch_booking_window**
-Data Type: Integer
-Decription: Number of days in the future the hotel stay started from the search date
+*Data Type:* Integer
+*Description:* Number of days in the future the hotel stay started from the search date
 
 ```{r}
 range(tr$srch_booking_window)
@@ -369,52 +369,52 @@ hist(tr$srch_booking_window, main = "Histogram of booking window")
 days_future100 <- subset(tr$srch_booking_window, tr$srch_booking_window <= 100)
 hist(days_future100, main = "Histogram of booking window (100 days)")
 ```
-Observations: Data dsitribution appears logarithmic. Most common booking window is within 5 days of stay
+*Observations:* Data dsitribution appears logarithmic. Most common booking window is within 5 days of stay
 
 
 ---
 ## Exploring **srch_adults_count**
-Data Type: Integer
-Description: The number of adults specified in the hotel room
+*Data Type:* Integer
+*Description:* The number of adults specified in the hotel room
 
 ```{r}
 range(tr$srch_adults_count)
 hist(tr$srch_adults_count, main = "Histogram of number of adults per booking")
 
 ```
-Observations: Most common hotel booking is for 2 adults per room.
+*Observations:* Most common hotel booking is for 2 adults per room.
 
 
 ---
 ## Exploring **srch_children_count**
-Data Type: Integer
-Description: The number of (extra occupancy) children specified in the hotel room
+*Data Type:* Integer
+*Description:* The number of (extra occupancy) children specified in the hotel room
 
 ```{r}
 range(tr$srch_children_count)
 hist(tr$srch_children_count, main = "Histogram of number of children per booking")
 
 ```
-Observations: Most bookings are made without including children
+*Observations:* Most bookings are made without including children
 
 
 ---
 ## Exploring **srch_room_count**
-Data Type: Integer
-Description: Number of hotel rooms specified in the search
+*Data Type:* Integer
+*Description:* Number of hotel rooms specified in the search
 
 ```{r}
 range(tr$srch_room_count)
 hist(tr$srch_room_count, main = "Histogram of number of rooms")
 
 ```
-Observations: Vast majority of bookings are made for 1 room only
+*Observations:* Vast majority of bookings are made for 1 room only
 
 
 ---
 ## Exploring **srch_saturday_night_bool**
-Data Type: Boolean
-Description: +1 if the stay includes a Saturday night, starts from Thursday with a length of stay is less than or equal to 4 nights (i.e. weekend); otherwise 0
+*Data Type:* Boolean
+*Description:* +1 if the stay includes a Saturday night, starts from Thursday with a length of stay is less than or equal to 4 nights (i.e. weekend); otherwise 0
 
 ```{r}
 hist(tr$srch_saturday_night_bool, main = "Histogram of Saturday night boolean")
@@ -425,13 +425,13 @@ nrow(as.matrix(saturday_yes))  # 2490145
 
 ```
 
-Observations: Number of bookings made including Saturday night (2490145) is almost the same as excluding (2468202)
+*Observations:* Number of bookings made including Saturday night (2490145) is almost the same as excluding (2468202)
 
 
 ---
 ## Exploring **srch_query_affinity_score**
-Data Type: Float
-Description: The log of the probability a hotel will be clicked on in Internet searches (hence the values are negative) A null signifies there are no data (i.e. hotel did not register in any searches)
+*Data Type:* Float
+*Description:* The log of the probability a hotel will be clicked on in Internet searches (hence the values are negative) A null signifies there are no data (i.e. hotel did not register in any searches)
 
 ```{r}
 #range(tr$srch_query_affinity_score, na.rm = FALSE)  # excluding NULL  <-- this doesn't work properly
@@ -439,34 +439,34 @@ Description: The log of the probability a hotel will be clicked on in Internet s
 sqas <- subset(tr$srch_query_affinity_score, tr$srch_query_affinity_score != "NULL")
 sqas <- as.numeric(sqas)
 range(sqas)
-hist(sqas, xlab = "srch_query_affinity_score", main = "Histogram of search query affinity score")
+hist(sqas, xlab = "srch_query_affinity_score", main = "Histogram of log probability of click on hotel")
 
 ```
 
-Observations: 93.6% of the data values are NULL. Even though the aata is officially type float, it was actually type char so it first had to be converted to type numeric for the histogram and to give the correct range. Histogram excludes NULL values.
+*Observations:* 93.6% of the data values are NULL. Even though the aata is officially type float, it was actually type char so it first had to be converted to type numeric for the histogram and to give the correct range. Histogram excludes NULL values.
 
 
 ---
 ## Exploring **orig_destination_distance**
-Data Type: Float
-Description: Physical distance between the hotel and the customer at the time of search. A null means the distance could not be calculated
+*Data Type:* Float
+*Description:* Physical distance between the hotel and the customer at the time of search. A null means the distance could not be calculated
 
 ```{r}
 #range(tr$orig_destination_distance)
 o2d_dist <- subset(tr$orig_destination_distance, tr$orig_destination_distance != "NULL")
 o2d_dist <- as.numeric(o2d_dist)
 range(o2d_dist)
-hist(o2d_dist)
+hist(o2d_dist, main = "Histogram of distance between hotel and customer during search")
 
 ```
 
-Observations: 32.4% of the data values are NULL. Converted type char to numeric. Histogram excludes NULL values. It's not clear in what units the distance is calculated in. Most bookings are made when the customer is close to the hotel
+*Observations:* 32.4% of the data values are NULL. Converted type char to numeric. Histogram excludes NULL values. It's not clear in what units the distance is calculated in. Most bookings are made when the customer is close to the hotel
 
 
 ---
 ## Exploring **random_bool**
-Data Type: Boolean
-Description: +1 when the displayed sort was random, 0 when the normal sort order was displayed
+*Data Type:* Boolean
+*Description:* +1 when the displayed sort was random, 0 when the normal sort order was displayed
 
 ```{r}
 hist(tr$random_bool, main = "Histogram of random boolean on display sort")
@@ -477,18 +477,23 @@ nrow(as.matrix(sort_normal))  # 3491170
 1467177 / tr_row * 100  # 29.59004
 3491170 / tr_row * 100  # 70.40996
 ```
-Observations: Random sort display = 29.6%; Normal sort display = 70.4%
+*Observations:* Random sort display = 29.6%; Normal sort display = 70.4%
+
+
+---
+# Competitor variables
+The following variables apply to competitors 1 to 8 (i.e. comp1, comp2, etc.). Values such as number of NULLs vary between them.
 
 
 ---
 ## Exploring **comp1_rate**
-Data Type: Integer
-Description: +1 if Expedia has a lower price than competitor 1 for the hotel; 0 if the same; -1 if Expedia’s price is higher than competitor 1; null signifies there is no competitive data
+*Data Type:* Integer
+*Description:* +1 if Expedia has a lower price than competitor 1 for the hotel; 0 if the same; -1 if Expedia’s price is higher than competitor 1; null signifies there is no competitive data
 
 ```{r}
 c1_rate <- subset(tr$comp1_rate, tr$comp1_rate != "NULL")
 c1_rate <- as.numeric(c1_rate)
-hist(c1_rate)
+hist(c1_rate, main = "Histogram of price comparison with Competitor1")
 
 c1_rate_lower <- subset(c1_rate, c1_rate == 1)
 c1_rate_same <- subset(c1_rate, c1_rate == 0)
@@ -506,15 +511,130 @@ nrow(as.matrix(c1_rate))  # 119930
 
 ```
 
-Observations: Data contains 97.6% NULL values but we cannot change these to 0 as NULL has a meaning. Of the remaining data - 56.1% Expedia has a lower price; 35.8% Expedia's price is the same as competitor; 8.1% Expedia has a higher price.
+*Observations:* Data contains 97.6% NULL values but we cannot change these to 0 as NULL has a meaning. Of the remaining data: 56.1% Expedia has a lower price; 35.8% Expedia's price is the same as competitor; 8.1% Expedia has a higher price.
 
 
 ---
 ## Exploring **comp1_inv**
-Data Type: +1 if competitor 1 does not have availability in the hotel; 0 if both Expedia and competitor 1 have availability; null signifies there is no competitive data
+*Data Type:* Integer
+*Description:* +1 if competitor 1 does not have availability in the hotel; 0 if both Expedia and competitor 1 have availability; null signifies there is no competitive data
 
 ```{r}
+c1_inv <- subset(tr$comp1_inv, tr$comp1_inv != "NULL")
+c1_inv <- as.numeric(c1_inv)
+range(c1_inv, na.rm = TRUE)  #  -1 to 1
+hist(c1_inv, xlab = "comp1_inv", main = "Histogram of hotel availability compared to Competitor1")
+
+c1_inv_yes <- subset(c1_inv, c1_inv == 1)
+c1_inv_both <- subset(c1_inv, c1_inv == 0)
+c1_inv_no <- subset(c1_inv, c1_inv == -1)
+
+nrow(as.matrix(c1_inv_yes))   # 5492
+nrow(as.matrix(c1_inv_both))  # 122599
+nrow(as.matrix(c1_inv_no))    # 1468
+nrow(as.matrix(c1_inv))       # 129559
+
+5492 / 129559 * 100    # 4.238995
+122599 / 129559 * 100  # 94.62793
+1468 / 129559 * 100    # 1.133075
 
 ```
 
-Observations: 97.4% of values are NULL
+*Observations:* 97.4% of values are NULL. Of the non-NULL set: 4.2% only Expedia has availablility; 94.6% both Expedia and competitor1 have availability; 1.1% only competitor1 has availability
+
+
+---
+## Exploring **comp1_rate_percent_diff**
+*Data Type:* Float
+*Description:* The absolute percentage difference (if one exists) between Expedia and competitor 1’s price (Expedia’s price the denominator); null signifies there is no competitive data
+
+```{r}
+c1_rpd <- subset(tr$comp1_rate_percent_diff, tr$comp1_rate_percent_diff != "NULL")
+c1_rpd <- as.numeric(c1_rpd)
+range(c1_rpd, na.rm = TRUE)  #  2 to 30389
+tail(sort(c1_rpd)) # max value is extreme but not an anomaly
+
+hist(c1_rpd, xlab = "comp1_rate_percent_diff", main = "Histogram of price difference with Competitor1 (absolute percentage)")
+
+```
+
+*Observations:* 98.1% of values are NULL. Of the non-NULL values: absolute price difference ranges between 2 and 30389
+*Questions:* If this is a percentage value why do we have a maximum of 30389?? (Guido's answer:  "This is definitely an error")
+
+
+---
+# Training set variables only
+
+---
+## Exploring **position**
+*Data Type:* Integer
+*Description:* Hotel position on Expedia’s search results page. This is only provided for the training data, but not the test data
+
+```{r}
+range(tr$position)
+hist(tr$position, main = "Histogram of hotel position on search page")
+  
+```
+
+*Observations:* Data ranges from 1 to 40. Histogram has a distinct pattern. TODO: look into why that is so.
+
+
+---
+## Exploring **click_bool**
+*Data Type:* Boolean
+*Description:* 1 if the user clicked on the property, 0 if not
+
+```{r}
+hist(tr$click_bool, main = "Histogram of whether user clicked on hotel")
+click_bool_yes <- subset(tr$click_bool, tr$click_bool == 1)
+click_bool_no <- subset(tr$click_bool, tr$click_bool == 0)
+
+nrow(as.matrix(click_bool_yes))  # 221879
+nrow(as.matrix(click_bool_no))   # 4736468
+
+221879 / tr_row * 100  # 4.474858
+4736468 / tr_row *100  # 95.52514
+
+```
+*Observations:* 95.5% of searches did not result in the user clicking on a particular hotel
+
+
+---
+## Exploring **booking_bool**
+*Data Type:* Boolean
+*Description:* 1 if the user booked the property, 0 if not
+
+```{r}
+hist(tr$booking_bool, main = "Histogram of whether user clicked on hotel")
+booking_bool_yes <- subset(tr$booking_bool, tr$booking_bool == 1)
+booking_bool_no <- subset(tr$booking_bool, tr$booking_bool == 0)
+
+nrow(as.matrix(booking_bool_yes))  # 138390
+nrow(as.matrix(booking_bool_no))   # 4819957
+
+138390 / tr_row * 100   # 2.791051
+4819957 / tr_row * 100  # 97.20895
+```
+*Observations:* 97.2% of searches did not result in the user booking a particular hotel
+
+
+---
+## Exploring **gross_booking_usd**
+*Data Type:* Float
+*Description:* Total value of the transaction. This can differ from the price_usd due to taxes, fees, conventions on multiple day bookings and purchase of a room type other than the one shown in the search
+
+```{r}
+gbu <- subset(tr$gross_bookings_usd, tr$gross_bookings_usd != "NULL")
+gbu <- as.numeric(gbu)
+range(gbu)
+head(sort(subset(gbu, gbu > 0)))
+tail(sort(subset(gbu, gbu < 10000)))
+tail(sort(subset(gbu, gbu < 1000)))
+
+gbu_2k <- subset(gbu, gbu < 2000)
+hist(gbu_2k, xlab = "gross_bookings_usd", main = "Histogram of total value of transaction")
+     
+     
+```
+*Observations:* Data is made up of 97.2% NULL values. Of the remaining values the range is from 0.0 to 159292.4. The vast majority of values are around 200 USD. Histogram excludes NULL values. This data will definitely need some cleaning up!
+*Questions:* What do the NULL values mean? Is NULL generated when the search does not result in a booking? If that is the case, then what does 0 mean? How is a value like 0.30 possible, for example? (Guido's answer:  "here I would assume that NULL means no data available and 0 means the property was not booked")
