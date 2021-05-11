@@ -45,10 +45,15 @@ for (i in 1:tr_col) {
   df_null_ratios[i, 3] <- null_perc         
 }
 
+# Table of NULLs per attribute
 df_null_ratios
 
+# Barplot of NULLs per attribute
+par(mar=c(10,4,4,2) + 0.1)
+barplot(df_null_ratios$NULL_Count, names.arg = df_null_ratios$Column_Name, horiz = FALSE, las=2, cex.names=0.8, ylim = c(0,5000000), main = "NULL counts per attribute")
+
 ```
-Check the fields with more than 90% NULL values against the following descriptions of the data-set for significance!
+Check the variables containing more than 90% NULL values against the following descriptions of the data-set for significance!
 (e.g. Not all NULLs can be converted to 0 since these would become actual values.)
 
 
@@ -116,7 +121,8 @@ missing_v_countries_perc <- (max_uniq_v_country - num_uniq_v_country) / max_uniq
 missing_v_countries_perc
 
 ```
-*Observations:* 9% of visitor countries are missing from the data-set. TODO: check whether *visitor_location_country_id* is specific to *srch_id*
+*Observations:* 9% of visitor countries are missing from the data-set. 
+*TODO:* check whether *visitor_location_country_id* is specific to *srch_id*
 
 
 ---
@@ -132,7 +138,8 @@ range(vhs)
 hist(vhs, xlab = "visitor_hist_starrating", main = "Histogram of mean hotel rating scores")
 
 ```
-*Observations:* 94.9% NULL values. Note that the mean hotel rating (*visitor_hist_starrating*) is specific to an individual (*srch_id*). We can potentially replace null values with a calculated value of the means.
+*Observations:* 94.9% NULL values. Note that the mean hotel rating (*visitor_hist_starrating*) is specific to an individual (*srch_id*). 
+*TODO:* change NULL values to -1 since this is an invalid rating and it can be ignored by the algorithm
 
 
 ---
@@ -141,14 +148,24 @@ hist(vhs, xlab = "visitor_hist_starrating", main = "Histogram of mean hotel rati
 *Description:* The mean price per night (in US$) of the hotels the customer has previously purchased; null signifies there is no purchase history on the customer
 
 ```{r}
-#Find the range of mean USD price per night of the non-NULL set
+# Find the range of mean USD price per night of the non-NULL set
 vha_usd <- subset(tr$visitor_hist_adr_usd, tr$visitor_hist_adr_usd != "NULL")
 vha_usd <- as.numeric(vha_usd)
 range(vha_usd)
+
+# Find the 0's in the data-set
+subset(vha_usd, vha_usd == 0)
+vha_usd0 <- subset(vha_usd, vha_usd == 0)
+nrow(as.matrix(vha_usd0))  # 39 zeroes in data-set
+
+# Index of rows in original data-set where variable equals 0 
+which(as.numeric(tr$visitor_hist_adr_usd) == 0)
+
 hist(vha_usd, xlab = "visitor_hist_adr_usd", main = "Histogram of mean USD paid per night")
 
 ```
-*Observations:* 94.89% NULL values. Most common mean price per night is 200 USD.
+*Observations:* 94.89% NULL values. Most common mean price per night is 200 USD. 39 entries contain 0. 
+*TODO:* change NULL values to 0 (this will make it a 0 mean centred value).
 
 
 ---
@@ -269,8 +286,9 @@ hist(pls2, xlab = "prop_location_score2", main = "Histogram of hotel location's 
 
 ```
 
-*Observations:* 22% NULL values. Second score data appear to be logarithmic. 
-*Questions:* Why have a second score? What is it for compared to the first score? (Guido's answer: don't know but don't disregard these features as they may still be useful)
+*Observations:* 22% NULL values. Histogram does not include nulls. Second score data appear to be logarithmic. 
+*Questions:* Why have a second score? What is it for compared to the first score? (Guido's answer: don't know but don't disregard these features as they may still be useful). (Kaggle competition host: "Score1 and Score2 are postively correlated", https://www.kaggle.com/c/expedia-personalized-sort/discussion/5854 )
+*TODO:* change NULLs to -1 (these do not fall into the 0:1 range and can be ignored by the algorithm) 
 
 
 ---
@@ -340,7 +358,8 @@ nrow(as.matrix(uniq_dest_id))  # 18127
 hist(tr$srch_destination_id, main = "Histogram of destination IDs")
 
 ```
-*Observations:* Some destinations are more popular than others (TODO: find out what ones are these). 10289/28416 of destination ids are missing from the data-set sequence (36%)
+*Observations:* Some destinations are more popular than others. 10289/28416 of destination ids are missing from the data-set sequence (36%)
+*TODO:* Find out which destinations are more popular
 
 
 ---
@@ -443,8 +462,8 @@ hist(sqas, xlab = "srch_query_affinity_score", main = "Histogram of log probabil
 
 ```
 
-*Observations:* 93.6% of the data values are NULL. Even though the aata is officially type float, it was actually type char so it first had to be converted to type numeric for the histogram and to give the correct range. Histogram excludes NULL values.
-
+*Observations:* 93.6% of the data values are NULL. Even though the data is officially type float, it was actually type char so it first had to be converted to type numeric for the histogram and to give the correct range. Histogram excludes NULL values.
+*TODO:* Change NULL values to 1 (this is outside the range of -infinity:0)
 
 ---
 ## Exploring **orig_destination_distance**
@@ -461,6 +480,7 @@ hist(o2d_dist, main = "Histogram of distance between hotel and customer during s
 ```
 
 *Observations:* 32.4% of the data values are NULL. Converted type char to numeric. Histogram excludes NULL values. It's not clear in what units the distance is calculated in. Most bookings are made when the customer is close to the hotel
+*TODO:* Impute the missing data from the correlation between *visitor_location_country_id* and *prop_country_id*
 
 
 ---
@@ -512,6 +532,7 @@ nrow(as.matrix(c1_rate))  # 119930
 ```
 
 *Observations:* Data contains 97.6% NULL values but we cannot change these to 0 as NULL has a meaning. Of the remaining data: 56.1% Expedia has a lower price; 35.8% Expedia's price is the same as competitor; 8.1% Expedia has a higher price.
+*TODO:* Change NULL values to -2 (this is outside the range of -1:1 so it can be ignored by the algorithm)
 
 
 ---
@@ -540,8 +561,10 @@ nrow(as.matrix(c1_inv))       # 129559
 
 ```
 
-*Observations:* 97.4% of values are NULL. Of the non-NULL set: 4.2% only Expedia has availablility; 94.6% both Expedia and competitor1 have availability; 1.1% only competitor1 has availability
-
+*Observations:* 97.4% of values are NULL. 
+Of the non-NULL set: 4.2% only Expedia has availablility (+1); 94.6% both Expedia and competitor1 have availability (0); 1.1% only competitor1 has availability (-1). Histogram excludes NULLs.
+(From Kaggle competition host: "If compX_inv = -1 then a given hotel should not appear in rankings." https://www.kaggle.com/c/expedia-personalized-sort/discussion/5774)
+*TODO:* Change NULL values to -2 (this is outside of the range -1:1 and can be ignored by the algorithm)
 
 ---
 ## Exploring **comp1_rate_percent_diff**
@@ -576,7 +599,8 @@ hist(tr$position, main = "Histogram of hotel position on search page")
   
 ```
 
-*Observations:* Data ranges from 1 to 40. Histogram has a distinct pattern. TODO: look into why that is so.
+*Observations:* Data ranges from 1 to 40. Histogram has a distinct pattern. 
+*TODO:* look into why the histogram has this particular pattern.
 
 
 ---
