@@ -31,7 +31,6 @@ def gradient_booster(filepath):
         #x = min_max_scaler.fit_transform(x)
 
         if i == 0:
-            print("x")
             gbm.fit(x,y)#,loss=ndcg_score(enumerate(y.to_list(), y))
         #else:
         break
