@@ -34,7 +34,7 @@ def open_chunks(filepath, column_name):
     for feature in count_dict:
         temp_string += str(feature)
         temp_string += ": Non-NaN=" + str(count_dict[feature]["Not-null"])
-        temp_string += ". Total=" + str(count_dict[feature]["Total"]) + " \n"
+        temp_string += " & Total=" + str(count_dict[feature]["Total"]) + " \n"
 
     # Write counts string to file
     new_file = open("Results/counts.txt", "w")
