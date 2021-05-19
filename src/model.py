@@ -83,7 +83,7 @@ def make_prediction(model, filename):
 if __name__ == "__main__":
 
     # Gradient booster
-    gbm = gradient_booster("Data/training_set_VU_DM.csv")
+    gbm = gradient_booster("Data/train_with_price_dif.csv")
 
     # Final prediction
-    make_prediction(gbm, "Data/test_set_VU_DM.csv")
+    make_prediction(gbm, "Data/test_with_price_dif.csv")

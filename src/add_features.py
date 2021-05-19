@@ -56,11 +56,11 @@ def add_features(filepath):
         chunk["price_rank"] = new_list
         chunk["rating_rank"] = new_rating_list
         if p == 0:
-            chunk.to_csv("Data/train_with_price_rank.csv", header=chunk.columns, mode='w')
+            chunk.to_csv("Data/test_with_price_rank.csv", header=chunk.columns, mode='w')
         else:
             chunk.columns = chunk.iloc[1]
             chunk = chunk[1:]
-            chunk.to_csv("Data/train_with_price_rank.csv",  mode='a')
+            chunk.to_csv("Data/test_with_price_rank.csv",  mode='a')
         print(chunk)
     return filepath
 
@@ -73,6 +73,6 @@ def check(filepath):
 if __name__ == "__main__":
 
     # Gradient booster
-    new_df = add_features("Data/training_set_VU_DM.csv")
+    new_df = add_features("Data/test_set_VU_DM.csv")
 
-    check("Data/train_with_price_rank.csv")
+    check("Data/test_with_price_rank.csv")
