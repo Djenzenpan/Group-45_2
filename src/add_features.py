@@ -11,14 +11,6 @@ def add_features(filepath):
     file = pd.read_csv(filepath, chunksize=chunksize)
 
     for i, chunk in enumerate(file):
-        print(i)
-        if i == 0:
-            f = open("Data/train_with_price_rank.csv", "w")
-            f.write("id,")
-            for het in chunk.columns.to_list():
-                f.write(het + ",")
-            f.write("price_rank,rating_rank")
-            f.close()
 
         #if i < 5:
         search_ids = chunk["srch_id"].to_list()
@@ -63,7 +55,7 @@ def add_features(filepath):
             new_rating_list.append(sum(new_rating_list)/len(new_rating_list))
         chunk["price_rank"] = new_list
         chunk["rating_rank"] = new_rating_list
-        chunk.to_csv("Data/train_with_price_rank.csv", mode='a')
+        chunk.to_csv("Data/train_with_price_rank.csv", header=chunk.columns, mode='a')
         #else:
             #break
     return filepath
@@ -77,6 +69,6 @@ def check(filepath):
 if __name__ == "__main__":
 
     # Gradient booster
-    new_df = add_features("Data/train.csv")
+    new_df = add_features("Data/training_set_VU_DM.csv")
 
     check("Data/train_with_price_rank.csv")

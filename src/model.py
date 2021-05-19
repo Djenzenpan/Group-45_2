@@ -74,7 +74,7 @@ def make_prediction(model, filename):
                         break
                     index = j + i + 1
                 while pred_storage:
-                    current_best_index = pred_storage.index(min(pred_storage))
+                    current_best_index = pred_storage.index(max(pred_storage))
                     write_string = str(current_search_id) + "," + str(prop_storage[current_best_index]) + "\n"
                     pred_storage.pop(current_best_index)
                     prop_storage.pop(current_best_index)
@@ -83,7 +83,7 @@ def make_prediction(model, filename):
 if __name__ == "__main__":
 
     # Gradient booster
-    gbm = gradient_booster("Data/train.csv")
+    gbm = gradient_booster("Data/training_set_VU_DM.csv")
 
     # Final prediction
-    make_prediction(gbm, "Data/test.csv")
+    make_prediction(gbm, "Data/test_set_VU_DM.csv")
