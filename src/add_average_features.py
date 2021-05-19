@@ -37,7 +37,10 @@ def add_features(filepath):
 
 
         chunk["average_rate_percent_diff"] = average
-        chunk.to_csv("Data/train_with_average_features.csv", header=chunk.columns, mode='a')
+        if i == 0:
+            chunk.to_csv("Data/train_with_average_features.csv", header=chunk.columns, mode='w')
+        else:
+            chunk.to_csv("Data/train_with_average_features.csv", mode='a')
         print(chunk)
     return filepath
 
