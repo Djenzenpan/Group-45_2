@@ -40,7 +40,9 @@ def add_features(filepath):
         if i == 0:
             chunk.to_csv("Data/train_with_average_features.csv", header=chunk.columns, mode='w')
         else:
-            chunk.to_csv("Data/train_with_average_features.csv", mode='a')
+            chunk.columns = chunk.iloc[1]
+            chunk = chunk[1:]
+            chunk[1:].to_csv("Data/train_with_average_features.csv", header=None, mode='a')
         print(chunk)
     return filepath
 

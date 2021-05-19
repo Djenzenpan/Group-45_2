@@ -20,18 +20,18 @@ def add_features(filepath):
         for j in range(len(prices)):
             if prices[j] != "price_usd":
                 if old_price[j] != 0:
-                    temp_list.append(float(prices[j]) - ((2**float(old_price[j]))*days[j]))
+                    temp_list.append(float(prices[j]) - ((2**float(old_price[j]))*int(days[j])))
                 else:
                     temp_list.append(0)
-
         chunk["price_diff_from_recent"] = temp_list
-        print(chunk)
+
         if i == 0:
             chunk.to_csv("Data/train_with_price_dif.csv", header=chunk.columns, mode='w')
         else:
-            chunk.to_csv("Data/train_with_price_dif.csv", mode='a')
-        #else:
-            #break
+            chunk.columns = chunk.iloc[1]
+            chunk = chunk[1:]
+            chunk.to_csv("Data/train_with_price_dif.csv", header=None, mode='a')
+        print(chunk)
     return filepath
 
 def check(filepath):

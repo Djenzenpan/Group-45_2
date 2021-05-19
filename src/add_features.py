@@ -10,7 +10,7 @@ def add_features(filepath):
     # Splits dataset into chunks and loops through them
     file = pd.read_csv(filepath, chunksize=chunksize)
 
-    for i, chunk in enumerate(file):
+    for p, chunk in enumerate(file):
 
         #if i < 5:
         search_ids = chunk["srch_id"].to_list()
@@ -55,10 +55,12 @@ def add_features(filepath):
             new_rating_list.append(sum(new_rating_list)/len(new_rating_list))
         chunk["price_rank"] = new_list
         chunk["rating_rank"] = new_rating_list
-        if i == 0:
+        if p == 0:
             chunk.to_csv("Data/train_with_price_rank.csv", header=chunk.columns, mode='w')
         else:
-            chunk.to_csv("Data/train_with_price_rank.csv", mode='a')
+            chunk.columns = chunk.iloc[1]
+            chunk = chunk[1:]
+            chunk.to_csv("Data/train_with_price_rank.csv",  mode='a')
         print(chunk)
     return filepath
 
