@@ -38,11 +38,11 @@ def add_features(filepath):
 
         chunk["average_rate_percent_diff"] = average
         if i == 0:
-            chunk.to_csv("Data/train_with_average_features.csv", header=chunk.columns, mode='w')
+            chunk.to_csv("Data/test_with_average_features.csv", header=chunk.columns, mode='w')
         else:
             chunk.columns = chunk.iloc[1]
             chunk = chunk[1:]
-            chunk[1:].to_csv("Data/train_with_average_features.csv", header=None, mode='a')
+            chunk[1:].to_csv("Data/test_with_average_features.csv", header=None, mode='a')
         print(chunk)
     return filepath
 
@@ -55,4 +55,4 @@ def check(filepath):
 if __name__ == "__main__":
 
     # Gradient booster
-    new_df = add_features("Data/train_with_price_rank.csv")
+    new_df = add_features("Data/test_with_price_rank.csv")
